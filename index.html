@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prueba Local PMTiles</title>
+
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@2.11.0/dist/index.js"></script>
+
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
+    #map { height: 100vh; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <script>
+    const protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      zoom: 6,
+      center: [-3.7038, 40.4168],
+      style: {
+        version: 8,
+        sources: {
+          'base-esri': {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256,
+            attribution: 'Tiles &copy; Esri &mdash; &copy; OpenStreetMap contributors'
+          },
+          'capa-vivienda': {
+            type: 'vector',
+            url: 'pmtiles://output_housing_v3.pmtiles',
+            attribution: '| Fuente: &copy; Miguel Bravo Candela'
+          }
+        },
+        layers: [
+          {
+            id: 'mapa-base',
+            type: 'raster',
+            source: 'base-esri'
+          },
+          {
+            id: 'vivienda-poligonos',
+            type: 'fill',
+            source: 'capa-vivienda',
+            'source-layer': 'gdf_df_24_spain_perfect', 
+            paint: {
+              'fill-color': '#2b8cbe',
+              'fill-opacity': 0.6
+            }
+          },
+          {
+            id: 'vivienda-lineas',
+            type: 'line',
+            source: 'capa-vivienda',
+            'source-layer': 'gdf_df_24_spain_perfect',
+            paint: {
+              'line-color': '#ffffff',
+              'line-width': 0.5
+            }
+          }
+        ]
+      }
+    });
+  </script>
+</body>
+</html>
