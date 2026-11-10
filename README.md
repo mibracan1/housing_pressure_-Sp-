@@ -6,6 +6,8 @@ A raw Pmtiles object is provided for easing data integration in web mapping apps
 
 You can check out a previsualization here: https://mibracan1.github.io/housing_pressure_-Sp-/ 
 
+Project is to be updated to improve visualization and construction of Composite Index 
+
 ## Data Sources 
 
 **Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [Pablo García Guzmán (@pablogguz)](https://github.com/pablogguz)
