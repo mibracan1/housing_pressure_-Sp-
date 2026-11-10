@@ -8,7 +8,7 @@ You can check out a previsualization here: https://mibracan1.github.io/housing_p
 
 ## Data Sources 
 
-**Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [@pablogguz] (https://github.com/pablogguz) 
+**Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [Pablo García Guzmán (@pablogguz)](https://github.com/pablogguz)
         García Guzmán P (2026). ineAtlas: Access to Spanish Household Income Distribution Atlas Data. R package version 0.2.1, https://github.com/pablogguz/ineAtlas.
 
 **Rent data** was retrieved from SERPAVI
