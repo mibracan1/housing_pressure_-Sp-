@@ -8,7 +8,7 @@ You can check out a previsualization here: https://mibracan1.github.io/housing_p
 
 ## Data Sources 
 
-**Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [@username] (https://github.com/pablogguz) 
+**Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [Pablo García Guzmán (@pablogguz)](https://github.com/pablogguz)
         García Guzmán P (2026). ineAtlas: Access to Spanish Household Income Distribution Atlas Data. R package version 0.2.1, https://github.com/pablogguz/ineAtlas.
 
 **Rent data** was retrieved from SERPAVI
@@ -41,9 +41,9 @@ This requires integrating estimation techniques and qualitative assessments when
 
 Index Construction & Normalization
 
-The input variables—Number of Housing Units ($N$) and Residential Rent Burden ($P$, defined as the percentage of median rent over median income)—are normalized using a Min-Max transformation.  
+The input variables, both Number of Housing Units ($N$) and Residential Rent Burden ($P$)(defined as the percentage of median rent over median income) are normalized using a Min-Max transformation.  To reduce right-skewness and balance variable weights, total housing volume was log-transformed
 
-The Composite Index of Residential Pressure Areas ($I_{\text{mult}, i}$) is aggregated via multiplication in order to penalize census sections that possess high housing volume but low rent burden, or vice versa:
+The **Composite Index of Residential Pressure Areas** ($I_{\text{mult}, i}$) is aggregated via multiplication in order to penalize census sections that possess high housing volume but low rent burden, or vice versa:
 
 $$I_{\text{mult}, i} = N_{\text{norm}, i} \times P_{\text{norm}, i}$$
 
