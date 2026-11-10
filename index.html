@@ -53,10 +53,20 @@
             source: 'capa-vivienda',
             'source-layer': 'gdf_df_24_spain_perfect', 
             paint: {
-              'fill-color': '#2b8cbe',
-              'fill-opacity': 0.6
-            }
-          },
+              'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['coalesce', ['get', 'indice_mult_log']],
+                  0,    '#cccccc',      
+                  0.1, '#B5E1FD',      
+                  0.13, '#5DBEFA',      
+                  0.17, '#F14242', 
+                  0.25,  '#EE1717',   
+                  0.526314, '#9B0C0C'       
+                ],
+                'fill-opacity': 0.6
+              }
+},
           {
             id: 'vivienda-lineas',
             type: 'line',
@@ -64,12 +74,14 @@
             'source-layer': 'gdf_df_24_spain_perfect',
             paint: {
               'line-color': '#ffffff',
-              'line-width': 0.5
+              'line-width': 0.1
             }
           }
         ]
       }
     });
+
+  
   </script>
 </body>
 </html>
