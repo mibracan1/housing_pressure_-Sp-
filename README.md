@@ -41,7 +41,7 @@ This requires integrating estimation techniques and qualitative assessments when
 
 Index Construction & Normalization
 
-The input variables, both Number of Housing Units ($N$) and Residential Rent Burden ($P$)(defined as the percentage of median rent over median income) are normalized using a Min-Max transformation.  
+The input variables, both Number of Housing Units ($N$) and Residential Rent Burden ($P$)(defined as the percentage of median rent over median income) are normalized using a Min-Max transformation.  To reduce right-skewness and balance variable weights, total housing volume was log-transformed
 
 The **Composite Index of Residential Pressure Areas** ($I_{\text{mult}, i}$) is aggregated via multiplication in order to penalize census sections that possess high housing volume but low rent burden, or vice versa:
 
