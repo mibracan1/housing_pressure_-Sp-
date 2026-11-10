@@ -29,15 +29,22 @@ where $P_{\text{vc}}$ is the median monthly price for Multi-family Housing (Vivi
 The main objective of the web map is to channel strategic focus toward priority action areas within the housing affordability crisis.To achieve this, a composite index is developed to summarize the strategic relevance of each census section (sección censal). 
 
 The areas of highest strategic priority are defined by two key factors: 
-    (1) Higher rent-to-income burden: The proportion of median household income absorbed by rent payments.
-    (2) Higher volume of active leases: The absolute count of registered rental contracts.
+
+    (1) The proportion of median household income absorbed by rent payments.
+    
+    (2) The absolute count of registered rental contracts.
+    
     
 The index yields high values for census sections that simultaneously feature a high volume of active leases and significant housing cost pressure relative to median income.
 
 This analytical design introduces three structural biases that must be accounted for:
+
     (1) In lower-income census sections, the absolute count of formal rental contracts is often lower, even though the rent burden relative to local wages is extreme. In these instances, null values ($NaN$) or artificially low score outputs may occur.
+    
     (2) The scope is strictly limited to the residential rental market rather than overall housing market prices.
+    
     (3) The index only captures officially registered tenancy contracts. 
+    
     
 This requires integrating estimation techniques and qualitative assessments when designing public intervention strategies.
 
