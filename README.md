@@ -35,13 +35,11 @@ The areas of highest strategic priority are defined by two key factors:
 The index yields high values for census sections that simultaneously feature a high volume of active leases and significant housing cost pressure relative to median income.
 
 This analytical design introduces three structural biases that must be accounted for:
-    (1) Invisibilization of low-income areas: In lower-income census sections, the absolute count of formal rental contracts is often lower, even though the rent burden relative to local wages is extreme. In these instances, null values ($NaN$) or artificially low score outputs may occur.
-    (2) Exclusion of total housing stock prices: The scope is strictly limited to the residential rental market rather than overall housing market prices.
-    (3) Formal registration reliance: The index only captures officially registered tenancy contracts. 
+    (1) In lower-income census sections, the absolute count of formal rental contracts is often lower, even though the rent burden relative to local wages is extreme. In these instances, null values ($NaN$) or artificially low score outputs may occur.
+    (2) The scope is strictly limited to the residential rental market rather than overall housing market prices.
+    (3) The index only captures officially registered tenancy contracts. 
     
 This requires integrating estimation techniques and qualitative assessments when designing public intervention strategies.
-
-Index Construction & Normalization
 
 The input variables, both Number of Housing Units ($N$) and Residential Rent Burden ($P$)(defined as the percentage of median rent over median income) are normalized using a Min-Max transformation.  To reduce right-skewness and balance variable weights, total housing volume was log-transformed
 
