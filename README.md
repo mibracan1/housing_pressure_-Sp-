@@ -26,13 +26,13 @@ You can check out a previsualization here: https://mibracan1.github.io/housing_p
 
 **PMTiles Vector Layers:** 
 
-| Feature | Data Type | Range / Format | Description |
-| :--- | :--- | :--- | :--- |
-| `indice_mult_log` | Float | 0.00 – 0.53 | Multivariate housing pressure index post-log transformation and normalization of variables. |
-| `precio_medio24` | Float | €/month | Median monthly rental price for 2024. |
-| `median_income_equiv_monthly` | Float | €/month | Median monthly equivalent household income 2023 |
-| `presion_alquiler` | Float | Ratio | Ratio of median rent to monthly income within census tract. |
-| `total_viv` | Integer | Count | Total number of rented dwellings in section. |
+| Feature | Range / Format | Description |
+| :---  | :--- | :--- |
+| `indice_mult_log` | 0.00 – 0.53 | Multivariate housing pressure index post-log transformation and normalization of variables. |
+| `precio_medio24` | €/month | Median monthly rental price for 2024. |
+| `median_income_equiv_monthly` | €/month | Median monthly equivalent household income 2023 |
+| `presion_alquiler` | Ratio | Ratio of median rent to monthly income within census tract. |
+| `total_viv` | Count | Total number of rented dwellings in section. |
 
 
 ## Data treatment 
