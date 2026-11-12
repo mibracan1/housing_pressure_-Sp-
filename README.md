@@ -1,18 +1,20 @@
 # Housing Pressure. Census tract level (Spain)
 
-## Work-in-progress
-
-Data and code for mapping housing pressures and strategic planning.
+Data for mapping housing pressures and strategic planning.
 
 A raw Pmtiles object, built with Tippecanoe, is provided for easing data integration in web mapping apps
 
 You can check out a previsualization here: https://mibracan1.github.io/housing_pressure_-Sp-/ 
 
+## Work-in-progress
+
 **Project is to be updated to improve visualization and construction of Composite Index** 
 * Extreme values distorted Min-Max normalization (classic mistake) and has to be recomputed. Number of dwellings in area might not be as interesting as rent pressure, thus might be modified through weighting. Quantitative order is correct and informative, however.
-* Numberic values have a margin of uncertainty, please consult Data sources.
-* Visualization does not include Names of localities in which census tract are visualized. Reader has to be guided through basemap 
-* National wide data highlight dramatic spatial mix of high rent pressure on median monthly income and concentration of dwellings in the renting market (urban cores), sidelining problems faced in middle-sized localities. Depending on the end-game in mind, a dynamic symbology that reconfigures symbology on the fly depending on the scale and locations visualised could be of interest for local or regional agents. 
+* Numeric values have a margin of uncertainty, please consult Data sources.
+* Visualization does not include Names of localities in which census tract are visualized . Reader has to be guided through basemap 
+* National wide data highlight structural hotspots in major urban cores, but compresses visual variation within mid-sized municipalities. While these localities experience lower strain than Madrid or Barcelona, local or regional agents may still require granular visibility into intra-urban inequality. Implementing dynamic, viewport-aware symbology (recalculating color ramps based on visible tracts) would allow the same vector tileset to serve both national and local. 
+* Income data is 2023 not 2024, updated soon
+
 
 ## Data Sources 
 
@@ -35,16 +37,18 @@ You can check out a previsualization here: https://mibracan1.github.io/housing_p
 
 ## Data treatment 
 
-The weighted average housing price is calculated using a straightforward weighted mean:
+Data wrangling and computation in R and Python, compressed in Tippecanoe and then mapped using MapLibre GL JS library 
 
-$$P_{\text{mean}} = \frac{(P_{\text{vc}} \cdot N_{\text{vc}}) + (P_{\text{vu}} \cdot N_{\text{vu}})}{N_{\text{total}}}$$
+The weighted housing price, resulting from two medians (not ideal but practical as no raw micro-data access), is calculated using a straightforward weighted score:
+
+$$P_{\text{weighted}} = \frac{(P_{\text{vc}} \cdot N_{\text{vc}}) + (P_{\text{vu}} \cdot N_{\text{vu}})}{N_{\text{total}}}$$
 
 where $P_{\text{vc}}$ is the median monthly price for Multi-family Housing (Vivienda Colectiva), $P_{\text{vu}}$ is the median monthly price for Single-family Housing (Vivienda Unifamiliar), $N_{\text{vc}}$ and $N_{\text{vu}}$ are their respective counts, and $N_{\text{total}}$ is the total number of housing units.
 
-The main objective of the web map is to channel strategic focus toward priority action areas within the housing affordability crisis.To achieve this, a composite index is developed to summarize the strategic relevance of each census section (sección censal). 
+The main objective of the web map is to channel strategic focus toward priority action areas within the housing affordability crisis. To achieve this, a composite index is developed to summarize the strategic relevance of each census section (sección censal). 
 
 The areas of highest strategic priority are defined by two key factors: 
-    (1) Higher rent-to-income burden: The proportion of median household income absorbed by rent payments.
+    (1) Higher rent-to-income burden: The proportion of median equivalent household income absorbed by rent payments.
     (2) Higher volume of active leases: The absolute count of registered rental contracts.
     
 The index yields high values for census sections that simultaneously feature a high volume of active leases and significant housing cost pressure relative to median income.
@@ -56,9 +60,7 @@ This analytical design introduces three structural biases that must be accounted
     
 This requires integrating estimation techniques and qualitative assessments when designing public intervention strategies.
 
-Index Construction & Normalization
-
-The input variables, both Number of Housing Units ($N$) and Residential Rent Burden ($P$)(defined as the percentage of median rent over median income) are normalized using a Min-Max transformation.  To reduce right-skewness and balance variable weights, total housing volume was log-transformed
+The input variables, both Number of dwelling units on rent ($N$) and Residential rent burden ($P$) (defined as the ratio of median rent over median income) are normalized using a Min-Max transformation.  To reduce right-skewness and balance variable weights, total housing volume was log-transformed.
 
 The **Composite Index of Residential Pressure Areas** ($I_{\text{mult}, i}$) is aggregated via multiplication in order to penalize census sections that possess high housing volume but low rent burden, or vice versa:
 
