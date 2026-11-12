@@ -1,19 +1,36 @@
 # Housing Pressure. Census tract level (Spain)
 
+## Work-in-progress
+
 Data and code for mapping housing pressures and strategic planning.
 
-A raw Pmtiles object is provided for easing data integration in web mapping apps
+A raw Pmtiles object, built with Tippecanoe, is provided for easing data integration in web mapping apps
 
 You can check out a previsualization here: https://mibracan1.github.io/housing_pressure_-Sp-/ 
+
+**Project is to be updated to improve visualization and construction of Composite Index** 
+* Extreme values distorted Min-Max normalization (classic mistake) and has to be recomputed. Number of dwellings in area might not be as interesting as rent pressure, thus might be modified through weighting. Quantitative order is correct and informative, however.
+* Numberic values have a margin of uncertainty, please consult Data sources.
+* Visualization does not include Names of localities in which census tract are visualized. Reader has to be guided through basemap 
+* National wide data highlight dramatic spatial mix of high rent pressure on median monthly income and concentration of dwellings in the renting market (urban cores), sidelining problems faced in middle-sized localities. Depending on the end-game in mind, a dynamic symbology that reconfigures symbology on the fly depending on the scale and locations visualised could be of interest for local or regional agents. 
 
 ## Data Sources 
 
 **Income data** was retrieved from Instituto Nacional de Estadística employing *ineAtlas* R package created by [Pablo García Guzmán (@pablogguz)](https://github.com/pablogguz)
-        García Guzmán P (2026). ineAtlas: Access to Spanish Household Income Distribution Atlas Data. R package version 0.2.1, https://github.com/pablogguz/ineAtlas.
+        García Guzmán P (2024). ineAtlas: Access to Spanish Household Income Distribution Atlas Data. R package version 0.2.1, https://github.com/pablogguz/ineAtlas.
 
 **Rent data** was retrieved from SERPAVI
         Ministerio de Vivienda y Agenda Urbana (2026). Sistema Estatal de Referencia del Precio del Alquiler de Vivienda. https://www.mivau.gob.es/vivienda/alquila-bien-es-tu-derecho/serpavi [Accessed October 17, 2026]
 
+**PMTiles Vector Layers:** 
+
+| Feature | Data Type | Range / Format | Description |
+| :--- | :--- | :--- | :--- |
+| `indice_mult_log` | Float | 0.00 – 0.53 | Multivariate housing pressure index post-log transformation and normalization of variables. |
+| `precio_medio24` | Float | €/month | Median monthly rental price for 2024. |
+| `median_income_equiv_monthly` | Float | €/month | Median monthly equivalent household income 2023 |
+| `presion_alquiler` | Float | Ratio | Ratio of median rent to monthly income within census tract. |
+| `total_viv` | Integer | Count | Total number of rented dwellings in section. |
 
 
 ## Data treatment 

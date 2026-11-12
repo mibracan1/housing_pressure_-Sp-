@@ -10,17 +10,28 @@
   <script src="https://unpkg.com/pmtiles@2.11.0/dist/index.js"></script>
 
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
-    #map { height: 100vh; width: 100%; }
+    body, html { margin: 0; padding: 0; height: 100%; width: 100%; font-family: system-ui, -apple-system, sans-serif; }
+    #map { height: 100vh; width: 100%; position: relative; }
 
+    /* Top-Left Overlay: Legend */
+    .map-overlay-left {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+    }
 
-    
-    .info-box-small {
+    /* Top-Right Overlay: Repository Link */
+    .map-overlay-right {
       position: absolute;
       top: 12px;
       right: 12px;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Small Info Badge */
+    .info-box-small {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(4px);
       padding: 6px 12px;
       border-radius: 6px;
@@ -33,21 +44,87 @@
       color: #0066cc;
       text-decoration: none;
       font-weight: 500;
-      margin-left: 4px;
+      margin-left: 2px;
     }
     .info-box-small a:hover {
       text-decoration: underline;
     }
 
+    /* Continuous Legend Box */
+    .legend-box {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      padding: 10px 14px;
+      border-radius: 6px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+      font-size: 11px;
+      color: #333;
+      width: 190px;
+    }
+    .legend-title {
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: #111;
+    }
+    .legend-gradient {
+      height: 12px;
+      width: 100%;
+      border-radius: 3px;
+      /* CSS gradient exact match to MapLibre color stops */
+      background: linear-gradient(
+        to right,
+        #cccccc 0%,     /* 0.00 */
+        #0295ac 19%,    /* 0.10 */
+        #baf5fd 38%,    /* 0.20 */
+        #F83535 47%,    /* 0.25 */
+        #9D0606 57%,    /* 0.30 */
+        #450202 100%    /* 0.52+ */
+      );
+      margin-bottom: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .legend-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #555;
+      font-size: 10px;
+    }
+
+    /* MapLibre Popup Styling */
+    .maplibregl-popup-content {
+      padding: 10px 14px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 10px;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
 
-  <div id="map"></div>
-  <div class="info-box-small">
-      For more info refer to the repository in <a href="https://github.com/mibracan1/housing_pressure_-Sp-" target="_blank" rel="noopener">GitHub</a>. Thank you! 
+  <div id="map">
+    <!-- Top-Left Corner Container -->
+    <div class="map-overlay-left">
+      <div class="legend-box">
+        <div class="legend-title">Índice mult. (log)</div>
+        <div class="legend-gradient"></div>
+        <div class="legend-labels">
+          <span>0.00</span>
+          <span>0.17</span>
+          <span>0.52+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top-Right Corner Container -->
+    <div class="map-overlay-right">
+      <div class="info-box-small">
+        For more info refer to the repository in <a href="https://github.com/mibracan1/housing_pressure_-Sp-" target="_blank" rel="noopener">GitHub</a>.
+      </div>
     </div>
   </div>
+
   <script>
     const protocol = new pmtiles.Protocol();
     maplibregl.addProtocol("pmtiles", protocol.tile);
@@ -68,7 +145,7 @@
           'capa-vivienda': {
             type: 'vector',
             url: 'pmtiles://output_housing_v3.pmtiles',
-            attribution: '| Fuente: &copy; Miguel Bravo Candela'
+            attribution: '| &copy; Miguel Bravo Candela'
           }
         },
         layers: [
@@ -92,22 +169,28 @@
               'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['coalesce', ['get', 'indice_mult_log']],
-                  0,    '#cccccc',      
-                  0.1, '#BAF4FD',      
-                  0.13, '#FDBABA',      
-                  0.17, '#F83535', 
-                  0.25,  '#9D0606',   
-                  0.526314, '#450202'       
-                ],
-                'fill-opacity': 0.6
-              }
-},
+                ['get', 'indice_mult_log'],
+                0,        '#cccccc',      
+                0.1,      '#0295ac',      
+                0.20,     '#baf5fd',      
+                0.25,     '#F83535', 
+                0.30,     '#9D0606',   
+                0.526314, '#450202'       
+              ],
+              'fill-opacity': 0.6
+            }
+          },
           {
             id: 'vivienda-lineas',
             type: 'line',
             source: 'capa-vivienda',
             'source-layer': 'gdf_df_24_spain_perfect',
+            filter: [
+              'all',
+              ['has', 'indice_mult_log'],
+              ['!=', ['get', 'indice_mult_log'], null],
+              ['>', ['get', 'indice_mult_log'], 0]
+            ],
             paint: {
               'line-color': '#ffffff',
               'line-width': 0.1
@@ -117,33 +200,43 @@
       }
     });
 
-  
+    // Hover Popup Logic
     const popup = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false
     });
 
-    
     map.on('mousemove', 'vivienda-poligonos', (e) => {
       map.getCanvas().style.cursor = 'pointer';
 
       if (e.features.length > 0) {
-        const val = e.features[0].properties.indice_mult_log;
-        const formattedVal = val !== undefined ? Number(val).toFixed(2) : 'N/A';
+        const props = e.features[0].properties;
+
+        const indexVal = props.indice_mult_log !== undefined ? Number(props.indice_mult_log).toFixed(2) : 'N/A';
+        const housingVal = props.precio_medio24 !== undefined ? Number(props.precio_medio24).toLocaleString('es-ES', { maximumFractionDigits: 2 }) : 'N/A';
+        const medianIncome = props.median_income_equiv_monthly !== undefined ? Number(props.median_income_equiv_monthly).toLocaleString('es-ES', { maximumFractionDigits: 2 }) : 'N/A';
+        const presionAlquiler = props.presion_alquiler !== undefined ? Number(props.presion_alquiler).toFixed(2) : 'N/A';
+        const totalViv = props.total_viv !== undefined ? Number(props.total_viv).toLocaleString('es-ES', { maximumFractionDigits: 0 }) : 'N/A';
+
+        const popupHTML = `
+          <div><strong>Index:</strong> ${indexVal}</div>
+          <div><strong>Median Rent (€/month):</strong> ${housingVal}</div>
+          <div><strong>Median Income (€):</strong> ${medianIncome}</div>
+          <div><strong>Rent Pressure:</strong> ${presionAlquiler}</div>
+          <div><strong>Number of Dwellings:</strong> ${totalViv}</div>
+        `;
 
         popup
           .setLngLat(e.lngLat)
-          .setHTML(`<strong>Rent Pressure Index:</strong> ${formattedVal}`)
+          .setHTML(popupHTML)
           .addTo(map);
       }
     });
 
-    
     map.on('mouseleave', 'vivienda-poligonos', () => {
       map.getCanvas().style.cursor = '';
       popup.remove();
     });
-
   </script>
 </body>
 </html>
